@@ -110,9 +110,7 @@ geocoder.on('addresschosen', function(evt){
 
 ## Constructor
 
-#### `new Geocoder(type, options)`
-
-- `type` `{String}` - Maybe later we will have other types like `'reverse'`. So for now just pass `'nominatim'`.
+#### `new Geocoder(options)`
 
 - `options` is an object with the following possible properties:
     * `provider`             : `'osm'` (default), `'mapquest'`, `'photon'`, `'pelias'`, `'bing'`, `'opencage'`, custom provider instance; Your preferable provider;
