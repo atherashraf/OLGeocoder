@@ -31,30 +31,26 @@ const klasses = VARS.cssClasses;
 export class Nominatim {
     /**
      * @constructor
-     * @param {Geocoder} base Base class.
+     * @param {Geocoder} base Main class.
+     * @param {Element} els HTML Element
      */
     constructor(base, els) {
         this.Base = base;
-
         this.layerName = randomId('geocoder-layer-');
         this.layer = new LayerVector({
             name: this.layerName,
             source: new SourceVector()
         });
-
         this.options = base.options;
-        // console.log(base)
         // provider is either the name of a built-in provider as a string or an
         // object that implements the provider API
         this.options.provider =
-            typeof this.options.provider === 'string'
-                ? this.options.provider.toLowerCase()
-                : this.options.provider;
-        this.provider = this.newProvider();
-
-        this.els = els;
-        this.lastQuery = '';
-        this.container = this.els.container;
+            (typeof this.options.provider === 'string'
+                ? this.options.provider.toLowerCase() : this.options.provider)
+        this.provider = this.newProvider()
+        this.els = els
+        this.lastQuery = ''
+        this.container = this.els.container
         this.registeredListeners = {mapClick: false};
         this.setListeners();
     }
@@ -85,7 +81,7 @@ export class Nominatim {
         };
         // eslint-disable-next-line unicorn/consistent-function-scoping
         const stopBubbling = (evt) => evt.stopPropagation();
-        const reset = (evt) => {
+        const reset = () => {
             this.els.input.focus();
             this.els.input.value = '';
             this.lastQuery = '';
@@ -116,7 +112,7 @@ export class Nominatim {
         this.els.reset.addEventListener('click', reset, false);
 
         // if (this.options.targetType === TARGET_TYPE.GLASS) {
-            this.els.button.addEventListener('click', openSearch, false);
+        this.els.button.addEventListener('click', openSearch, false);
         // }
     }
 
@@ -165,7 +161,7 @@ export class Nominatim {
                     this.listenMapClick();
                 }
             })
-            .catch((err) => {
+            .catch(() => {
                 removeClass(this.els.reset, klasses.spin);
 
                 const li = createElement('li', '<h5>Error! No internet connection?</h5>');
@@ -211,7 +207,6 @@ export class Nominatim {
         const coord_ = [Number.parseFloat(place.lon), Number.parseFloat(place.lat)];
         const projection = map.getView().getProjection();
         const coord = transform(coord_, 'EPSG:4326', projection);
-
         let {bbox} = place;
 
         if (bbox) {
@@ -246,7 +241,6 @@ export class Nominatim {
             }
 
             const feature = this.createFeature(coord, address);
-
             this.Base.dispatchEvent({
                 type: EVENT_TYPE.ADDRESSCHOSEN,
                 address,
@@ -262,6 +256,7 @@ export class Nominatim {
         const feature = new Feature(new Point(coord));
 
         this.addLayer();
+        console.log("featureStyle", this.options.featureStyle)
         feature.setStyle(this.options.featureStyle);
         feature.setId(randomId('geocoder-ft-'));
         this.getSource().addFeature(feature);

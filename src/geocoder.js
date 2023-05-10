@@ -1,6 +1,9 @@
 import {Control} from "ol/control";
 import {Html} from "./html";
 import {Nominatim} from "./nominatim";
+import {FEATURE_SRC} from "../konstants";
+import Style from "ol/style/Style";
+import Icon from "ol/style/Icon";
 
 
 class Geocoder extends Control{
@@ -11,25 +14,16 @@ class Geocoder extends Control{
     constructor(opt_options) {
         const options = opt_options || {};
 
-        // const button = document.createElement('button');
-        // button.innerHTML = 'N';
-        //
-        // const element = document.createElement('div');
-        // element.className = 'rotate-north ol-unselectable ol-control';
-        // element.appendChild(button);
         const $html = new Html(options);
         const container = $html.els.container
         super({
             element: container,
         });
+        options["featureStyle"] = new Style({ image: new Icon({ scale: 0.7, src: FEATURE_SRC }) })
         this.options = options
         this.map = options.map
         const $nominatim = new Nominatim(this, $html.els);
         this.layer = $nominatim.layer;
-        // console.log(this.layer)
-        // button.addEventListener('click', this.handleRotateNorth.bind(this), false);
-
-
     }
 
     /**
