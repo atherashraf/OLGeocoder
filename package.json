@@ -1,6 +1,7 @@
 {
-  "name": "olgeocoder",
+  "name": "da-geocoder",
   "version": "1.0.0",
+  "auther": "Ather Ashraf",
   "description": "",
   "main": "index.ts",
   "scripts": {
